@@ -1,0 +1,63 @@
+{
+  "name": "rentchain-blockchain",
+  "version": "1.0.0",
+  "description": "RentChain - Decentralized Rent Payment and Property Management Platform on Morph L2",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "check": "hardhat run scripts/check-installation.js",
+    "deploy:testnet": "hardhat run scripts/deploy.js --network morph-testnet",
+    "deploy:morphTestnet": "hardhat run scripts/deploy.js --network morphTestnet",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network morph-mainnet",
+    "deploy:morphl2": "hardhat run scripts/deploy.js --network morphl2",
+    "verify:testnet": "hardhat verify --network morph-testnet",
+    "verify:morphTestnet": "hardhat verify --network morphTestnet",
+    "verify:mainnet": "hardhat verify --network morph-mainnet",
+    "verify:morphl2": "hardhat verify --network morphl2",
+    "sourcify:testnet": "hardhat sourcify --network morphTestnet",
+    "sourcify:mainnet": "hardhat sourcify --network morph-mainnet"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "morph",
+    "l2",
+    "rent",
+    "property",
+    "defi",
+    "smart-contracts"
+  ],
+  "author": "RentChain Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.9",
+    "@nomicfoundation/hardhat-ethers": "^3.0.9",
+    "@nomicfoundation/hardhat-ignition": "^0.15.12",
+    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.13",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.13",
+    "@nomicfoundation/hardhat-toolbox": "^6.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.14",
+    "@nomicfoundation/ignition-core": "^0.15.12",
+    "@openzeppelin/contracts": "^5.0.0",
+    "@openzeppelin/hardhat-upgrades": "^3.0.0",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^9.1.0",
+    "chai": "^4.5.0",
+    "dotenv": "^16.6.1",
+    "hardhat": "^2.25.0",
+    "hardhat-gas-reporter": "^2.3.0",
+    "solidity-coverage": "^0.8.5",
+    "ts-node": "^10.9.2",
+    "typechain": "^8.3.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@chainlink/contracts": "^0.8.0",
+    "ethers": "^6.11.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
