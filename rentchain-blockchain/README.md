@@ -47,16 +47,6 @@ npm run check
 
 Edit the `.env` file with your configuration:
 
-```env
-# Deployment Configuration
-PRIVATE_KEY=your_private_key_here
-USDT_ADDRESS=0x176211869cA2b568f2A7D4EE941E073a821EE1ff
-
-# Optional
-MORPHSCAN_API_KEY=your_morphscan_api_key_here
-KEEPER_REGISTRY=0x0000000000000000000000000000000000000000
-REPORT_GAS=false
-```
 
 ### Dependency Versions
 
