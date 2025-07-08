@@ -1,0 +1,103 @@
+{
+  "about": "关于",
+  "browse listings": "浏览房源",
+  "connect wallet": "连接钱包",
+  "my dashboard": "我的仪表板",
+  "dashboard": "仪表板",
+  "contact": "联系",
+  "hero": {
+    "title": "更智能的租赁体验",
+    "description": "基于区块链的安全透明房屋和办公室租赁平台。建立您的租赁信用记录，同时享受去中心化支付和全球访问。",
+    "listed": "已列出的房产",
+    "tenants": "满意的租户",
+    "cities": "全球城市"
+  },
+  "features": {
+    "title": "为什么选择RentChain?",
+    "subtitle": "体验区块链技术带来的未来租赁方式，安全支付和透明记录",
+    "items": [
+      {
+        "id": 1,
+        "title": "安全支付",
+        "desc": "通过托管保护和法币通道支付租金。您的资金在双方满意前都是安全的。"
+      },
+      {
+        "id": 2,
+        "title": "建立信用",
+        "desc": "在链上追踪您的租赁历史，建立可验证的信用评分，随时随地跟随您。"
+      },
+      {
+        "id": 3,
+        "title": "全球访问",
+        "desc": "为全球用户提供多语言支持。支持英语、西班牙语、法语、普通话等多种语言。"
+      },
+      {
+        "id": 4,
+        "title": "透明记录",
+        "desc": "所有交易和报告都记录在区块链上，确保完全透明和可信。"
+      },
+      {
+        "id": 5,
+        "title": "灵活支付",
+        "desc": "通过集成的支付网关和钱包连接，使用加密货币或法币进行支付。"
+      },
+      {
+        "id": 6,
+        "title": "直接沟通",
+        "desc": "内置消息系统，让房东和租户能够安全高效地沟通。"
+      }
+    ]
+  },
+  "banner": {
+    "title": "准备好开始了吗？",
+    "description": "加入成千上万信任 RentChain 的房东和租户，享受安全透明的租赁交易。",
+    "browse properties": "浏览房源",
+    "list your property": "发布您的房源"
+  },
+  "footer": {
+    "tagline": "世界上首个基于区块链技术的去中心化租赁平台。安全、透明、人人可用。",
+    "platform": "平台",
+    "browse listings": "浏览房源",
+    "dashboard": "仪表板",
+    "about us": "关于我们",
+    "contact": "联系",
+    "legal": "法律信息",
+    "terms of service": "服务条款",
+    "privacy policy": "隐私政策",
+    "security": "安全性",
+    "support": "支持",
+    "copyright": "© 2025 RentChain. 保留所有权利。"
+  },
+  "Ldashboard": "查找租赁，安全支付，建立信用记录",
+  "Tdashboard": "发布房源，管理租金，全面掌控",
+  "userMenu": {
+    "changeName": "更改姓名",
+    "changeEmail": "更改电子邮件",
+    "changePassword": "更改密码",
+    "logout": "退出登录"
+  },
+  "disconnect": "断开连接",
+  "quickActions": {
+    "title": "Quick Actions",
+    "addNewProperty": "Add new property",
+    "viewAllProperties": "View all properties",
+    "paymentHistory": "Payment history",
+    "tenantManagement": "Tenant management",
+    "maintenanceRequests": "Maintenance requests",
+    "generateReports": "Generate reports",
+    "payRent": "Pay rent",
+    "submitMaintenanceRequest": "Submit maintenance request",
+    "new": "New",
+    "complaintTooltip": "File a maintenance or other complaint for your property.",
+    "complaintDescription": "This will take you to the complaints page where you can file a maintenance or other issue for your rented property.",
+    "viewLeaseAgreement": "View lease agreement",
+    "contactLandlord": "Contact landlord",
+    "checkCreditScore": "Check credit score",
+    "upcomingPayments": "Upcoming payments",
+    "monthlyRent": "Monthly Rent - {{month}}",
+    "utilities": "Utilities - {{month}}",
+    "upcoming": "Upcoming",
+    "overdue": "Overdue",
+    "dueDate": "{{date}}"
+  }
+}
