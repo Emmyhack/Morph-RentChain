@@ -1,6 +1,18 @@
 # RentChain Blockchain
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../LICENSE)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)]()
+
 A decentralized rent payment and property management platform built on the Morph blockchain (Layer 2, Ethereum-compatible).
+
+---
+
+## 🔗 Frontend Integration
+
+- This blockchain project is designed to work with the [RentChain Frontend](../RentChain-frontend/Frontend/RentChain/README.md).
+- See the frontend README for UI, i18n, and user experience details.
+
+---
 
 ## 📋 Problem Statement
 
