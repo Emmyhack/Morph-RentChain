@@ -1,0 +1,104 @@
+{
+  "about": "حول",
+  "browse listings": "تصفح القوائم",
+  "connect wallet": "ربط المحفظة",
+  "my dashboard": "لوحة التحكم الخاصة بي",
+  "dashboard": "لوحة التحكم",
+  "contact": "اتصل",
+  "hero": {
+    "title": "استأجر بذكاء مع",
+    "description": "إيجارات آمنة وشفافة للمنازل والمكاتب على البلوكشين. قم ببناء سجل ائتمان الإيجار الخاص بك أثناء الاستمتاع بالمدفوعات اللامركزية والوصول العالمي.",
+    "listed": "عقارات مدرجة",
+    "tenants": "مستأجرين سعداء",
+    "cities": "مدن حول العالم"
+  },
+  "features": {
+    "title": "لماذا تختار رنت تشاين؟",
+    "subtitle": "جرب مستقبل الإيجارات مع تقنية البلوكشين، المدفوعات الآمنة، والحفاظ على السجلات الشفافة",
+    "items": [
+      {
+        "id": 1,
+        "title": "مدفوعات آمنة",
+        "desc": "ادفع الإيجار مع حماية الضمان والمداخل النقدية. أموالك آمنة حتى يرضى الطرفان."
+      },
+      {
+        "id": 2,
+        "title": "بناء الائتمان",
+        "desc": "تتبع سجل إيجارك على السلسلة وابني درجة ائتمان قابلة للتحقق تتبعك في أي مكان."
+      },
+      {
+        "id": 3,
+        "title": "وصول عالمي",
+        "desc": "دعم متعدد اللغات للمستخدمين في جميع أنحاء العالم. متاح باللغة الإنجليزية والإسبانية والفرنسية والماندرين والمزيد."
+      },
+      {
+        "id": 4,
+        "title": "سجلات شفافة",
+        "desc": "يتم تسجيل جميع المعاملات والتقارير على البلوكشين للشفافية والثقة الكاملة."
+      },
+      {
+        "id": 5,
+        "title": "مدفوعات مرنة",
+        "desc": "ادفع بالعملات المشفرة أو العملات الورقية من خلال بوابات الدفع المتكاملة واتصالات المحفظة."
+      },
+      {
+        "id": 6,
+        "title": "اتصال مباشر",
+        "desc": "نظام مراسلة مدمج لمالكي العقارات والمستأجرين للتواصل بأمان وكفاءة."
+      }
+    ]
+  },
+  "banner": {
+    "title": "هل أنت مستعد للبدء؟",
+    "description": "انضم إلى الآلاف من الملاك والمستأجرين الذين يثقون بـ RentChain لإجراء معاملات إيجار آمنة وشفافة.",
+    "browse properties": "تصفح العقارات",
+    "list your property": "أدرج عقارك"
+  },
+  "footer": {
+    "tagline": "أول منصة إيجارات لامركزية في العالم مبنية على تقنية البلوكشين. آمنة، شفافة، ومتاحة للجميع.",
+    "platform": "المنصة",
+    "browse listings": "تصفح القوائم",
+    "dashboard": "لوحة التحكم",
+    "about us": "من نحن",
+    "contact": "اتصل بنا",
+    "legal": "قانوني",
+    "terms of service": "شروط الخدمة",
+    "privacy policy": "سياسة الخصوصية",
+    "security": "الأمان",
+    "support": "الدعم",
+    "copyright": "© 2025 RentChain. جميع الحقوق محفوظة."
+  },
+
+  "Ldashboard": "اعثر على إيجارات، وادفع بأمان، وابدأ بناء رصيدك الائتماني",
+  "Tdashboard": "أدرج العقارات، وتابع الإيجارات، واحتفظ بالسيطرة",
+  "userMenu": {
+    "changeName": "تغيير الاسم",
+    "changeEmail": "تغيير البريد الإلكتروني",
+    "changePassword": "تغيير كلمة المرور",
+    "logout": "تسجيل الخروج"
+  },
+  "disconnect": "قطع الاتصال",
+  "quickActions": {
+    "title": "Quick Actions",
+    "addNewProperty": "Add new property",
+    "viewAllProperties": "View all properties",
+    "paymentHistory": "Payment history",
+    "tenantManagement": "Tenant management",
+    "maintenanceRequests": "Maintenance requests",
+    "generateReports": "Generate reports",
+    "payRent": "Pay rent",
+    "submitMaintenanceRequest": "Submit maintenance request",
+    "new": "New",
+    "complaintTooltip": "File a maintenance or other complaint for your property.",
+    "complaintDescription": "This will take you to the complaints page where you can file a maintenance or other issue for your rented property.",
+    "viewLeaseAgreement": "View lease agreement",
+    "contactLandlord": "Contact landlord",
+    "checkCreditScore": "Check credit score",
+    "upcomingPayments": "Upcoming payments",
+    "monthlyRent": "Monthly Rent - {{month}}",
+    "utilities": "Utilities - {{month}}",
+    "upcoming": "Upcoming",
+    "overdue": "Overdue",
+    "dueDate": "{{date}}"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "about": "Acerca de",
+  "browse listings": "Explorar listados",
+  "connect wallet": "Conectar billetera",
+  "my dashboard": "mi panel",
+  "dashboard": "Panel de control",
+  "contact": "Contacto",
+  "hero": {
+    "title": "Alquila de forma más inteligente con",
+    "description": "Alquileres seguros y transparentes para casas y oficinas en la blockchain. Construye tu historial de crédito de alquiler mientras disfrutas de pagos descentralizados y accesibilidad global.",
+    "listed": "propiedades listadas",
+    "tenants": "inquilinos felices",
+    "cities": "ciudades en todo el mundo"
+  },
+  "features": {
+    "title": "¿Por qué elegir RentChain?",
+    "subtitle": "Experimenta el futuro de los alquileres con tecnología blockchain, pagos seguros y registros transparentes",
+    "items": [
+      {
+        "id": 1,
+        "title": "Pagos seguros",
+        "desc": "Paga el alquiler con protección de depósito en garantía y rampas fiduciarias. Tus fondos están seguros hasta que ambas partes estén satisfechas."
+      },
+      {
+        "id": 2,
+        "title": "Construye crédito",
+        "desc": "Realiza un seguimiento de tu historial de alquiler en la cadena y construye una puntuación crediticia verificable que te acompañe donde vayas."
+      },
+      {
+        "id": 3,
+        "title": "Acceso global",
+        "desc": "Soporte multilingüe para usuarios de todo el mundo. Disponible en inglés, español, francés, mandarín y más."
+      },
+      {
+        "id": 4,
+        "title": "Registros transparentes",
+        "desc": "Todas las transacciones e informes se registran en la blockchain para lograr total transparencia y confianza."
+      },
+      {
+        "id": 5,
+        "title": "Pagos flexibles",
+        "desc": "Paga con criptomonedas o moneda fiduciaria a través de pasarelas de pago integradas y conexiones de billetera."
+      },
+      {
+        "id": 6,
+        "title": "Comunicación directa",
+        "desc": "Sistema de mensajería incorporado para que propietarios e inquilinos se comuniquen de forma segura y eficiente."
+      }
+    ]
+  },
+  "banner": {
+    "title": "¿Listo para comenzar?",
+    "description": "Únete a miles de propietarios e inquilinos que confían en RentChain para transacciones de alquiler seguras y transparentes.",
+    "browse properties": "Explorar propiedades",
+    "list your property": "Publicar tu propiedad"
+  },
+  "footer": {
+    "tagline": "La primera plataforma de alquiler descentralizada del mundo construida sobre tecnología blockchain. Segura, transparente y accesible para todos.",
+    "platform": "Plataforma",
+    "browse listings": "Explorar listados",
+    "dashboard": "Panel de control",
+    "about us": "Sobre nosotros",
+    "contact": "Contacto",
+    "legal": "Legal",
+    "terms of service": "Términos del servicio",
+    "privacy policy": "Política de privacidad",
+    "security": "Seguridad",
+    "support": "Soporte",
+    "copyright": "© 2025 RentChain. Todos los derechos reservados."
+  },
+
+  "Ldashboard": "Encuentra alquileres, paga de forma segura y construye tu crédito",
+  "Tdashboard": "Publica propiedades, gestiona el alquiler y mantén el control",
+  "userMenu": {
+    "changeName": "Cambiar nombre",
+    "changeEmail": "Cambiar correo electrónico",
+    "changePassword": "Cambiar contraseña",
+    "logout": "Cerrar sesión"
+  },
+  "disconnect": "desconectar",
+  "quickActions": {
+    "title": "Quick Actions",
+    "addNewProperty": "Add new property",
+    "viewAllProperties": "View all properties",
+    "paymentHistory": "Payment history",
+    "tenantManagement": "Tenant management",
+    "maintenanceRequests": "Maintenance requests",
+    "generateReports": "Generate reports",
+    "payRent": "Pay rent",
+    "submitMaintenanceRequest": "Submit maintenance request",
+    "new": "New",
+    "complaintTooltip": "File a maintenance or other complaint for your property.",
+    "complaintDescription": "This will take you to the complaints page where you can file a maintenance or other issue for your rented property.",
+    "viewLeaseAgreement": "View lease agreement",
+    "contactLandlord": "Contact landlord",
+    "checkCreditScore": "Check credit score",
+    "upcomingPayments": "Upcoming payments",
+    "monthlyRent": "Monthly Rent - {{month}}",
+    "utilities": "Utilities - {{month}}",
+    "upcoming": "Upcoming",
+    "overdue": "Overdue",
+    "dueDate": "{{date}}"
+  }
+}

@@ -1,0 +1,38 @@
+[
+	{
+		"id": 1,
+		"title": "Secure Payments",
+		"desc": "Pay rent with escrow protection and fiat on-ramps. Your funds are safe until both parties are satisfied.",
+		"icon": "IoLockClosedOutline"
+	},
+	{
+		"id": 2,
+		"title": "Build Credit",
+		"desc": "Track your rental history on-chain and build a verifiable credit score that follows you anywhere.",
+		"icon": "FaRegStar"
+	},
+	{
+		"id": 3,
+		"title": "Global Access",
+		"desc": "Multilingual support for users worldwide. Available in English, Spanish, French, Mandarin, and more.",
+		"icon": "IoGlobeOutline"
+	},
+	{
+		"id": 4,
+		"title": "Transparent Records",
+		"desc": "All transactions and reports are recorded on the blockchain for complete transparency and trust.",
+		"icon": "LuShield"
+	},
+	{
+		"id": 5,
+		"title": "Flexible Payments",
+		"desc": "Pay with crypto or fiat currency through integrated payment gateways and wallet connections.",
+		"icon": "MdOutlinePayment"
+	},
+	{
+		"id": 6,
+		"title": "Direct Communication",
+		"desc": "Built-in messaging system for landlords and tenants to communicate securely and efficiently.",
+		"icon": "IoChatbubbleOutline"
+	}
+]
