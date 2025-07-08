@@ -2,6 +2,110 @@
 
 A decentralized rent payment and property management platform built on the Morph blockchain (Layer 2, Ethereum-compatible).
 
+## 📋 Problem Statement
+
+### **Core Problems in Traditional Rental Markets:**
+
+#### 1. **Payment Insecurity & Trust Issues**
+- **Problem**: Traditional rental payments lack transparency and security
+  - Tenants pay rent directly to landlords without escrow protection
+  - No guarantee that landlords will fulfill their obligations
+  - Disputes over payments are difficult to resolve
+  - Cash payments create no verifiable record
+
+#### 2. **Lack of Verifiable Rental History**
+- **Problem**: Tenants cannot build credit from rental payments
+  - Traditional rental payments don't contribute to credit scores
+  - No portable rental history that follows tenants
+  - Landlords have limited ways to verify tenant payment history
+  - International tenants face additional barriers
+
+#### 3. **Geographic & Language Barriers**
+- **Problem**: Rental markets are fragmented and inaccessible
+  - Limited access for international tenants and landlords
+  - Language barriers prevent cross-border rentals
+  - Different legal systems create complexity
+  - No unified platform for global rental transactions
+
+#### 4. **Poor Communication & Dispute Resolution**
+- **Problem**: Inefficient communication and dispute handling
+  - No standardized complaint system
+  - Maintenance requests often go unaddressed
+  - Disputes require expensive legal intervention
+  - No transparent record of interactions
+
+#### 5. **Limited Payment Options**
+- **Problem**: Restricted payment methods create barriers
+  - Traditional banking systems exclude many users
+  - International transfers are expensive and slow
+  - No support for cryptocurrency payments
+  - High fees for cross-border transactions
+
+## 🚀 Solution
+
+### **How RentChain Solves These Problems:**
+
+#### **Solution 1: Secure Escrow System**
+- **Escrow Protection**: Rent payments are held in smart contract escrow until both parties are satisfied
+- **Automatic Release**: Funds are automatically released to landlords upon successful payment
+- **Dispute Resolution**: Built-in dispute mechanism with transparent resolution process
+- **Dual Payment Support**: Both USDT (crypto) and fiat on-ramp payments supported
+
+#### **Solution 2: On-Chain Credit Scoring**
+- **Verifiable History**: All rental payments are recorded on the blockchain
+- **Portable Credit Score**: Credit score follows tenants across properties and countries
+- **Transparent Scoring**: Algorithm considers payment history, complaint resolution, and ratings
+- **Global Recognition**: On-chain records are universally verifiable
+
+#### **Solution 3: Multilingual Global Platform**
+- **13+ Languages**: Support for major world languages
+- **IPFS Translations**: Decentralized translation storage
+- **Global Accessibility**: Available to users worldwide
+- **Cross-Border Rentals**: Enables international rental transactions
+
+#### **Solution 4: Transparent Complaint System**
+- **Structured Complaints**: Categorized complaint system (Maintenance, Noise, Safety, Other)
+- **Transparent Tracking**: All complaints recorded on blockchain with timestamps
+- **Resolution Tracking**: Automatic tracking of complaint resolution times
+- **IPFS Storage**: Detailed complaint information stored off-chain but verifiably linked
+
+#### **Solution 5: Flexible Payment Infrastructure**
+- **Crypto Payments**: Direct USDT payments with automatic fee calculation
+- **Fiat Integration**: Support for traditional payment methods via on-ramp providers
+- **Low Fees**: 0.5% platform fee (much lower than traditional rental platforms)
+- **Fast Settlement**: Near-instant settlement for crypto payments
+
+#### **Solution 6: Built-in Communication & Reporting**
+- **Direct Messaging**: Built-in chat system for landlord-tenant communication
+- **Rating System**: Transparent rating system with dispute resolution via Kleros
+- **Report Generation**: Automated report generation for payment history, property performance
+- **Dispute Resolution**: Integration with decentralized dispute resolution platforms
+
+### **Key Value Propositions:**
+
+#### **For Tenants:**
+1. **Secure Payments**: Funds protected until both parties are satisfied
+2. **Credit Building**: Verifiable rental history that improves credit scores
+3. **Global Access**: Rent properties anywhere with multilingual support
+4. **Lower Fees**: 0.5% platform fee vs. traditional 8-12% agent fees
+5. **Transparent Records**: All interactions recorded on blockchain
+
+#### **For Landlords:**
+1. **Guaranteed Payments**: Escrow ensures rent is paid before release
+2. **Better Tenants**: Access to verified rental history and credit scores
+3. **Global Market**: Access to international tenants
+4. **Automated Management**: Smart contracts handle payment processing
+5. **Reduced Disputes**: Transparent record-keeping reduces conflicts
+
+#### **For the Platform:**
+1. **Sustainable Revenue**: 0.5% fee on all transactions
+2. **Network Effects**: More users increase platform value
+3. **Data Value**: Rental market data for analytics and insights
+4. **Global Scale**: No geographic limitations on growth
+
+### **Market Impact:**
+RentChain addresses a **$1.5 trillion global rental market** by solving fundamental trust and accessibility issues that have plagued the industry for decades. The platform creates a more efficient, transparent, and accessible rental ecosystem that benefits all stakeholders while generating sustainable revenue through transaction fees and value-added services.
+
 ## 🏗️ Architecture
 
 RentChain consists of 10 modular smart contracts that work together to provide a complete rental management solution:

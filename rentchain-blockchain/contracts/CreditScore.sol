@@ -283,7 +283,7 @@ contract CreditScore is Ownable, Pausable, ReentrancyGuard {
         return 85; // 85% on-time payments
     }
 
-    /**
+    /**yes
      * @dev Returns complaint resolution rate for a tenant
      * @param tenant Address of the tenant
      * @return percentage Resolution rate percentage (0-100)

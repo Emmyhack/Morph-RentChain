@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 /**
  * @title Listings
  * @dev Manages property listings for houses and offices
- * @notice This contract handles property creation, editing, and availability toggling
+ * @notice handles property creation, editing, and availability toggling
  * @author RentChain Team
  */
 contract Listings is Ownable, Pausable, ReentrancyGuard {
@@ -24,6 +24,7 @@ contract Listings is Ownable, Pausable, ReentrancyGuard {
         uint256 rentAmount;
         bool isAvailable;
         string ipfsHash;
+        string leaseAgreementIpfsHash;
         uint256 createdAt;
         uint256 updatedAt;
     }
@@ -61,17 +62,20 @@ contract Listings is Ownable, Pausable, ReentrancyGuard {
      * @param propertyType Type of property (0 = House, 1 = Office)
      * @param rentAmount Monthly rent amount in USDT
      * @param ipfsHash IPFS hash containing property details
+     * @param leaseAgreementIpfsHash IPFS hash containing lease agreement details
      */
     function addProperty(
         string memory title,
         uint8 propertyType,
         uint256 rentAmount,
-        string memory ipfsHash
+        string memory ipfsHash,
+        string memory leaseAgreementIpfsHash
     ) external whenNotPaused {
         require(bytes(title).length > 0, "Title cannot be empty");
         require(propertyType <= 1, "Invalid property type");
         require(rentAmount > 0, "Rent amount must be greater than 0");
         require(bytes(ipfsHash).length > 0, "IPFS hash cannot be empty");
+        require(bytes(leaseAgreementIpfsHash).length > 0, "Lease agreement IPFS hash cannot be empty");
         require(bytes(landlordKYC[msg.sender]).length > 0, "Landlord must be verified");
         
         totalProperties++;
@@ -85,6 +89,7 @@ contract Listings is Ownable, Pausable, ReentrancyGuard {
             rentAmount: rentAmount,
             isAvailable: true,
             ipfsHash: ipfsHash,
+            leaseAgreementIpfsHash: leaseAgreementIpfsHash,
             createdAt: block.timestamp,
             updatedAt: block.timestamp
         });
@@ -103,24 +108,28 @@ contract Listings is Ownable, Pausable, ReentrancyGuard {
      * @param propertyType New property type (0 = House, 1 = Office)
      * @param rentAmount New monthly rent amount in USDT
      * @param ipfsHash New IPFS hash containing property details
+     * @param leaseAgreementIpfsHash New IPFS hash containing lease agreement details
      */
     function editProperty(
         uint256 propertyId,
         string memory title,
         uint8 propertyType,
         uint256 rentAmount,
-        string memory ipfsHash
+        string memory ipfsHash,
+        string memory leaseAgreementIpfsHash
     ) public whenNotPaused {
         require(properties[propertyId].landlord == msg.sender, "Only landlord can edit property");
         require(bytes(title).length > 0, "Title cannot be empty");
         require(propertyType <= 1, "Invalid property type");
         require(rentAmount > 0, "Rent amount must be greater than 0");
         require(bytes(ipfsHash).length > 0, "IPFS hash cannot be empty");
+        require(bytes(leaseAgreementIpfsHash).length > 0, "Lease agreement IPFS hash cannot be empty");
         Property storage property = properties[propertyId];
         property.title = title;
         property.propertyType = PropertyType(propertyType);
         property.rentAmount = rentAmount;
         property.ipfsHash = ipfsHash;
+        property.leaseAgreementIpfsHash = leaseAgreementIpfsHash;
         property.updatedAt = block.timestamp;
         emit PropertyUpdated(propertyId, title, PropertyType(propertyType), rentAmount);
     }
@@ -177,6 +186,7 @@ contract Listings is Ownable, Pausable, ReentrancyGuard {
      * @return rentAmount Monthly rent amount
      * @return isAvailable Availability status
      * @return ipfsHash IPFS hash of property details
+     * @return leaseAgreementIpfsHash IPFS hash of lease agreement details
      * @return createdAt Creation timestamp
      * @return updatedAt Last update timestamp
      */
@@ -188,6 +198,7 @@ contract Listings is Ownable, Pausable, ReentrancyGuard {
         uint256 rentAmount,
         bool isAvailable,
         string memory ipfsHash,
+        string memory leaseAgreementIpfsHash,
         uint256 createdAt,
         uint256 updatedAt
     ) {
@@ -200,6 +211,7 @@ contract Listings is Ownable, Pausable, ReentrancyGuard {
             property.rentAmount,
             property.isAvailable,
             property.ipfsHash,
+            property.leaseAgreementIpfsHash,
             property.createdAt,
             property.updatedAt
         );
@@ -288,9 +300,10 @@ contract Listings is Ownable, Pausable, ReentrancyGuard {
         string memory title,
         uint8 propertyType,
         uint256 rentAmount,
-        string memory ipfsHash
+        string memory ipfsHash,
+        string memory leaseAgreementIpfsHash
     ) external whenNotPaused {
-        editProperty(propertyId, title, propertyType, rentAmount, ipfsHash);
+        editProperty(propertyId, title, propertyType, rentAmount, ipfsHash, leaseAgreementIpfsHash);
     }
 
     /**
