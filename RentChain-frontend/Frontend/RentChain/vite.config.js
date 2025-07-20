@@ -8,8 +8,13 @@ export default defineConfig({
     host: true,
     port: 5173,
     hmr: {
-      host: 'localhost',
+      host: '0.0.0.0',
       port: 5173,
     },
+    cors: true,
+  },
+  define: {
+    'process.env': {},
+    'global': 'window',
   },
 })

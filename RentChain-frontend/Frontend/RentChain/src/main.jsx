@@ -5,6 +5,9 @@ import "./index.css";
 import App from "./App.jsx";
 import i18n from "./i18n";
 import { Web3Provider } from "./context/Web3Context";
+import { Buffer } from 'buffer';
+window.Buffer = Buffer;
+window.global = window;
 
 createRoot(document.getElementById("root")).render(
 	<StrictMode>
