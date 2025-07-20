@@ -59,8 +59,8 @@ export const Web3Provider = ({ children }) => {
       setIsConnecting(true);
       
       // Create provider and signer
-      const web3Provider = new ethers.BrowserProvider(window.ethereum);
-      const web3Signer = await web3Provider.getSigner();
+      const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
+      const web3Signer = web3Provider.getSigner();
       
       // Get network info
       const networkInfo = await web3Provider.getNetwork();
