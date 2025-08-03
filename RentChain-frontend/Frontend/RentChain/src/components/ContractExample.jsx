@@ -1,446 +1,518 @@
 import React, { useState, useEffect } from 'react';
-import { useContracts } from '../hooks/useContracts';
 import { useWeb3 } from '../context/Web3Context';
-import { PROPERTY_TYPES, PAYMENT_STATUS } from '../config/contracts';
+import { useTranslation } from 'react-i18next';
+import { Button } from './common/Button';
+import { IoArrowBackSharp, IoImageOutline, IoTrashOutline } from 'react-icons/io5';
+import { useNavigate } from 'react-router-dom';
 
-const ContractExample = () => {
+const PropertyForm = () => {
   const { account, isConnected, userRole } = useWeb3();
-  const {
-    addProperty,
-    getProperty,
-    getLandlordProperties,
-    createPayment,
-    getPayment,
-    getUserPayments,
-    getPlatformStats,
-    loading,
-    error,
-    clearError
-  } = useContracts();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
 
-  const [properties, setProperties] = useState([]);
-  const [payments, setPayments] = useState([]);
-  const [platformStats, setPlatformStats] = useState(null);
-  const [selectedProperty, setSelectedProperty] = useState(null);
-
-  // Form states
-  const [propertyForm, setPropertyForm] = useState({
+  const [formData, setFormData] = useState({
     title: '',
-    propertyType: 0,
-    rentAmount: '',
-    ipfsHash: ''
+    type: 'apartment',
+    price: '',
+    location: '',
+    address: '',
+    bedrooms: 1,
+    bathrooms: 1,
+    sqft: '',
+    description: '',
+    amenities: [],
+    leaseTerms: '12 months minimum',
+    petPolicy: 'No pets allowed',
+    utilities: '',
+    images: []
   });
 
-  const [paymentForm, setPaymentForm] = useState({
-    landlord: '',
-    propertyId: '',
-    amount: '',
-    dueDate: ''
-  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
+  const [imageFiles, setImageFiles] = useState([]);
 
-  // Load user's properties
-  useEffect(() => {
-    if (isConnected && userRole === 'landlord') {
-      loadUserProperties();
-    }
-  }, [isConnected, userRole]);
+  // Available amenities
+  const availableAmenities = [
+    'Pool', 'Gym', 'Parking', 'Balcony', 'Garden', 'Garage', 
+    'Fireplace', 'AC', 'Heating', 'Laundry', 'Storage', 
+    'Security', 'Elevator', 'Pets Allowed', 'Furnished'
+  ];
 
-  // Load user's payments
-  useEffect(() => {
-    if (isConnected) {
-      loadUserPayments();
-    }
-  }, [isConnected]);
+  const propertyTypes = [
+    { value: 'apartment', label: t('apartment') || 'Apartment' },
+    { value: 'house', label: t('house') || 'House' },
+    { value: 'condo', label: t('condo') || 'Condo' },
+    { value: 'townhouse', label: t('townhouse') || 'Townhouse' },
+    { value: 'studio', label: t('studio') || 'Studio' },
+    { value: 'loft', label: t('loft') || 'Loft' },
+    { value: 'villa', label: t('villa') || 'Villa' },
+    { value: 'penthouse', label: t('penthouse') || 'Penthouse' },
+    { value: 'office', label: t('office') || 'Office' },
+    { value: 'warehouse', label: t('warehouse') || 'Warehouse' }
+  ];
 
-  // Load platform stats
-  useEffect(() => {
-    loadPlatformStats();
-  }, []);
-
-  const loadUserProperties = async () => {
-    try {
-      const propertyIds = await getLandlordProperties();
-      const propertyDetails = [];
-      
-      for (const id of propertyIds) {
-        const property = await getProperty(id);
-        if (property) {
-          propertyDetails.push(property);
-        }
-      }
-      
-      setProperties(propertyDetails);
-    } catch (err) {
-      console.error('Failed to load properties:', err);
-    }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
-  const loadUserPayments = async () => {
-    try {
-      const paymentIds = await getUserPayments();
-      const paymentDetails = [];
-      
-      for (const id of paymentIds) {
-        const payment = await getPayment(id);
-        if (payment) {
-          paymentDetails.push(payment);
-        }
-      }
-      
-      setPayments(paymentDetails);
-    } catch (err) {
-      console.error('Failed to load payments:', err);
-    }
+  const handleAmenityToggle = (amenity) => {
+    setFormData(prev => ({
+      ...prev,
+      amenities: prev.amenities.includes(amenity)
+        ? prev.amenities.filter(a => a !== amenity)
+        : [...prev.amenities, amenity]
+    }));
   };
 
-  const loadPlatformStats = async () => {
-    try {
-      const stats = await getPlatformStats();
-      setPlatformStats(stats);
-    } catch (err) {
-      console.error('Failed to load platform stats:', err);
-    }
-  };
-
-  const handleAddProperty = async (e) => {
-    e.preventDefault();
-    
-    if (!propertyForm.title || !propertyForm.rentAmount || !propertyForm.ipfsHash) {
-      alert('Please fill in all fields');
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length + imageFiles.length > 5) {
+      setError(t('max_images_error') || 'Maximum 5 images allowed');
       return;
     }
 
-    try {
-      const result = await addProperty(
-        propertyForm.title,
-        propertyForm.propertyType,
-        parseFloat(propertyForm.rentAmount),
-        propertyForm.ipfsHash
-      );
+    // Create preview URLs
+    const newImages = files.map(file => ({
+      file,
+      preview: URL.createObjectURL(file),
+      id: Date.now() + Math.random()
+    }));
 
-      if (result) {
-        alert('Property added successfully!');
-        setPropertyForm({
-          title: '',
-          propertyType: 0,
-          rentAmount: '',
-          ipfsHash: ''
-        });
-        loadUserProperties(); // Reload properties
-      }
-    } catch (err) {
-      console.error('Failed to add property:', err);
-    }
+    setImageFiles(prev => [...prev, ...newImages]);
+    setError('');
   };
 
-  const handleCreatePayment = async (e) => {
+  const removeImage = (imageId) => {
+    setImageFiles(prev => {
+      const imageToRemove = prev.find(img => img.id === imageId);
+      if (imageToRemove) {
+        URL.revokeObjectURL(imageToRemove.preview);
+      }
+      return prev.filter(img => img.id !== imageId);
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!paymentForm.landlord || !paymentForm.propertyId || !paymentForm.amount || !paymentForm.dueDate) {
-      alert('Please fill in all fields');
-      return;
-    }
+    setLoading(true);
+    setError('');
+    setSuccess('');
 
     try {
-      const dueDate = new Date(paymentForm.dueDate);
-      const result = await createPayment(
-        paymentForm.landlord,
-        parseInt(paymentForm.propertyId),
-        parseFloat(paymentForm.amount),
-        dueDate
-      );
-
-      if (result) {
-        alert('Payment created successfully!');
-        setPaymentForm({
-          landlord: '',
-          propertyId: '',
-          amount: '',
-          dueDate: ''
-        });
-        loadUserPayments(); // Reload payments
+      // Validate required fields
+      if (!formData.title || !formData.price || !formData.location || !formData.address) {
+        throw new Error(t('fill_required_fields') || 'Please fill in all required fields');
       }
+
+      // Simulate property creation
+      const propertyData = {
+        ...formData,
+        id: Date.now(),
+        landlord: account,
+        landlordName: 'Current User',
+        available: true,
+        dateAvailable: new Date().toISOString().split('T')[0],
+        images: imageFiles.map((img, index) => `/images/property_${Date.now()}_${index}.jpg`)
+      };
+
+      console.log('Creating property:', propertyData);
+
+      // Mock successful creation
+      setTimeout(() => {
+        setSuccess(t('property_created_success') || 'Property created successfully!');
+        setLoading(false);
+        
+        // Reset form after success
+        setTimeout(() => {
+          setFormData({
+            title: '',
+            type: 'apartment',
+            price: '',
+            location: '',
+            address: '',
+            bedrooms: 1,
+            bathrooms: 1,
+            sqft: '',
+            description: '',
+            amenities: [],
+            leaseTerms: '12 months minimum',
+            petPolicy: 'No pets allowed',
+            utilities: '',
+            images: []
+          });
+          setImageFiles([]);
+          setSuccess('');
+        }, 3000);
+      }, 2000);
+
     } catch (err) {
-      console.error('Failed to create payment:', err);
+      setError(err.message);
+      setLoading(false);
     }
   };
 
-  const getPropertyTypeName = (type) => {
-    return type === PROPERTY_TYPES.HOUSE ? 'House' : 'Office';
-  };
-
-  const getPaymentStatusName = (status) => {
-    const statusNames = {
-      [PAYMENT_STATUS.PENDING]: 'Pending',
-      [PAYMENT_STATUS.PAID]: 'Paid',
-      [PAYMENT_STATUS.LATE]: 'Late',
-      [PAYMENT_STATUS.DISPUTED]: 'Disputed',
-      [PAYMENT_STATUS.REFUNDED]: 'Refunded'
+  // Cleanup image URLs on unmount
+  useEffect(() => {
+    return () => {
+      imageFiles.forEach(img => {
+        URL.revokeObjectURL(img.preview);
+      });
     };
-    return statusNames[status] || 'Unknown';
-  };
+  }, []);
 
   if (!isConnected) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
-        <h2 className="text-2xl font-bold mb-4">Contract Integration Example</h2>
-        <p className="text-gray-600">Please connect your wallet to interact with contracts.</p>
+      <div className="w-full section-page !py-52">
+        <div className="text-center">
+          <h2 className="text-4xl font-bold mb-6">{t('connect_wallet_required') || 'Wallet Connection Required'}</h2>
+          <p className="text-2xl text-gray-600 mb-8">{t('connect_wallet_to_add_property') || 'Please connect your wallet to add a property'}</p>
+          <Button 
+            name={t('connect_wallet') || 'Connect Wallet'} 
+            onClick={() => navigate('/')}
+            className="bg-blue-500 hover:bg-blue-600"
+          />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">Contract Integration Example</h2>
-      
-      {/* Error Display */}
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          <span className="block sm:inline">{error}</span>
-          <button 
-            onClick={clearError}
-            className="float-right font-bold"
-          >
-            ×
-          </button>
+    <div className="w-full section-page !py-52">
+      <div className="relative w-full pt-20">
+        <div
+          onClick={() => navigate(-1)}
+          className="absolute top-0 left-0 flex items-center cursor-pointer gap-x-6 hover:scale-95 hover:text-primary"
+        >
+          <IoArrowBackSharp className="text-4xl" />
+          <span className="text-3xl font-medium">{t('back') || 'Back'}</span>
         </div>
-      )}
 
-      {/* Platform Stats */}
-      {platformStats && (
-        <div className="bg-blue-50 p-4 rounded-lg mb-6">
-          <h3 className="text-lg font-semibold mb-2">Platform Statistics</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div>
-              <p className="text-sm text-gray-600">Total Properties</p>
-              <p className="text-xl font-bold">{platformStats.totalProperties}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Total Complaints</p>
-              <p className="text-xl font-bold">{platformStats.totalComplaints}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Total Reports</p>
-              <p className="text-xl font-bold">{platformStats.totalReports}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Total Reminders</p>
-              <p className="text-xl font-bold">{platformStats.totalReminders}</p>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h1 className="text-5xl font-bold mb-6">{t('add_new_property') || 'Add New Property'}</h1>
+            <p className="text-2xl text-gray-600">{t('fill_property_details') || 'Fill in the details to list your property'}</p>
+            <div className="mt-4 p-4 bg-blue-50 rounded-xl">
+              <p className="text-lg text-blue-800">
+                {t('connected_as') || 'Connected as'}: <span className="font-mono font-semibold">{account?.slice(0, 6)}...{account?.slice(-4)}</span>
+              </p>
             </div>
           </div>
-        </div>
-      )}
 
-      {/* Add Property Form (Landlords only) */}
-      {userRole === 'landlord' && (
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h3 className="text-lg font-semibold mb-4">Add New Property</h3>
-          <form onSubmit={handleAddProperty} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Property Title
-              </label>
-              <input
-                type="text"
-                value={propertyForm.title}
-                onChange={(e) => setPropertyForm({...propertyForm, title: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter property title"
+          <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-8 space-y-8">
+            {/* Basic Information */}
+            <div className="space-y-6">
+              <h2 className="text-3xl font-semibold text-gray-800 border-b-2 border-blue-100 pb-3">
+                {t('basic_information') || 'Basic Information'}
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xl font-medium text-gray-700 mb-2">
+                    {t('property_title') || 'Property Title'} *
+                  </label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                    className="w-full p-4 border-2 border-gray-300 rounded-xl text-xl focus:border-blue-500 focus:outline-none transition-colors"
+                    placeholder={t('enter_property_title') || 'Enter property title'}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xl font-medium text-gray-700 mb-2">
+                    {t('property_type') || 'Property Type'} *
+                  </label>
+                  <select
+                    name="type"
+                    value={formData.type}
+                    onChange={handleInputChange}
+                    className="w-full p-4 border-2 border-gray-300 rounded-xl text-xl focus:border-blue-500 focus:outline-none transition-colors"
+                    required
+                  >
+                    {propertyTypes.map(type => (
+                      <option key={type.value} value={type.value}>{type.label}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xl font-medium text-gray-700 mb-2">
+                    {t('monthly_rent') || 'Monthly Rent (USD)'} *
+                  </label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                    className="w-full p-4 border-2 border-gray-300 rounded-xl text-xl focus:border-blue-500 focus:outline-none transition-colors"
+                    placeholder="0"
+                    min="0"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xl font-medium text-gray-700 mb-2">
+                    {t('square_feet') || 'Square Feet'}
+                  </label>
+                  <input
+                    type="number"
+                    name="sqft"
+                    value={formData.sqft}
+                    onChange={handleInputChange}
+                    className="w-full p-4 border-2 border-gray-300 rounded-xl text-xl focus:border-blue-500 focus:outline-none transition-colors"
+                    placeholder="0"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xl font-medium text-gray-700 mb-2">
+                    {t('location') || 'Location'} *
+                  </label>
+                  <input
+                    type="text"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleInputChange}
+                    className="w-full p-4 border-2 border-gray-300 rounded-xl text-xl focus:border-blue-500 focus:outline-none transition-colors"
+                    placeholder={t('enter_location') || 'Enter location'}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xl font-medium text-gray-700 mb-2">
+                    {t('full_address') || 'Full Address'} *
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    className="w-full p-4 border-2 border-gray-300 rounded-xl text-xl focus:border-blue-500 focus:outline-none transition-colors"
+                    placeholder={t('enter_full_address') || 'Enter full address'}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xl font-medium text-gray-700 mb-2">
+                    {t('bedrooms') || 'Bedrooms'}
+                  </label>
+                  <select
+                    name="bedrooms"
+                    value={formData.bedrooms}
+                    onChange={handleInputChange}
+                    className="w-full p-4 border-2 border-gray-300 rounded-xl text-xl focus:border-blue-500 focus:outline-none transition-colors"
+                  >
+                    {[0, 1, 2, 3, 4, 5, 6].map(num => (
+                      <option key={num} value={num}>{num} {num === 0 ? 'Studio' : num === 1 ? 'Bedroom' : 'Bedrooms'}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xl font-medium text-gray-700 mb-2">
+                    {t('bathrooms') || 'Bathrooms'}
+                  </label>
+                  <select
+                    name="bathrooms"
+                    value={formData.bathrooms}
+                    onChange={handleInputChange}
+                    className="w-full p-4 border-2 border-gray-300 rounded-xl text-xl focus:border-blue-500 focus:outline-none transition-colors"
+                  >
+                    {[1, 1.5, 2, 2.5, 3, 3.5, 4, 5].map(num => (
+                      <option key={num} value={num}>{num} {num === 1 ? 'Bathroom' : 'Bathrooms'}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Description */}
+            <div className="space-y-6">
+              <h2 className="text-3xl font-semibold text-gray-800 border-b-2 border-blue-100 pb-3">
+                {t('description') || 'Description'}
+              </h2>
+              <div>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  rows="6"
+                  className="w-full p-4 border-2 border-gray-300 rounded-xl text-xl focus:border-blue-500 focus:outline-none transition-colors resize-vertical"
+                  placeholder={t('describe_property') || 'Describe your property in detail...'}
+                />
+              </div>
+            </div>
+
+            {/* Amenities */}
+            <div className="space-y-6">
+              <h2 className="text-3xl font-semibold text-gray-800 border-b-2 border-blue-100 pb-3">
+                {t('amenities') || 'Amenities'}
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                {availableAmenities.map(amenity => (
+                  <label key={amenity} className="flex items-center space-x-3 p-3 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={formData.amenities.includes(amenity)}
+                      onChange={() => handleAmenityToggle(amenity)}
+                      className="w-5 h-5 text-blue-600 form-checkbox"
+                    />
+                    <span className="text-lg">{amenity}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Images Upload */}
+            <div className="space-y-6">
+              <h2 className="text-3xl font-semibold text-gray-800 border-b-2 border-blue-100 pb-3">
+                {t('property_images') || 'Property Images'}
+              </h2>
+              
+              <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
+                <IoImageOutline className="mx-auto text-6xl text-gray-400 mb-4" />
+                <p className="text-xl text-gray-600 mb-4">{t('upload_images_instruction') || 'Upload up to 5 images of your property'}</p>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                  id="image-upload"
+                />
+                <label
+                  htmlFor="image-upload"
+                  className="inline-block px-6 py-3 bg-blue-500 text-white rounded-xl cursor-pointer hover:bg-blue-600 transition-colors text-lg font-medium"
+                >
+                  {t('select_images') || 'Select Images'}
+                </label>
+              </div>
+
+              {/* Image Previews */}
+              {imageFiles.length > 0 && (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                  {imageFiles.map(image => (
+                    <div key={image.id} className="relative">
+                      <img
+                        src={image.preview}
+                        alt="Property preview"
+                        className="w-full h-32 object-cover rounded-xl border-2 border-gray-200"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(image.id)}
+                        className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                      >
+                        <IoTrashOutline className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Additional Details */}
+            <div className="space-y-6">
+              <h2 className="text-3xl font-semibold text-gray-800 border-b-2 border-blue-100 pb-3">
+                {t('additional_details') || 'Additional Details'}
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xl font-medium text-gray-700 mb-2">
+                    {t('lease_terms') || 'Lease Terms'}
+                  </label>
+                  <select
+                    name="leaseTerms"
+                    value={formData.leaseTerms}
+                    onChange={handleInputChange}
+                    className="w-full p-4 border-2 border-gray-300 rounded-xl text-xl focus:border-blue-500 focus:outline-none transition-colors"
+                  >
+                    <option value="6 months minimum">6 months minimum</option>
+                    <option value="12 months minimum">12 months minimum</option>
+                    <option value="24 months minimum">24 months minimum</option>
+                    <option value="36 months minimum">36 months minimum</option>
+                    <option value="Flexible">Flexible</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xl font-medium text-gray-700 mb-2">
+                    {t('pet_policy') || 'Pet Policy'}
+                  </label>
+                  <select
+                    name="petPolicy"
+                    value={formData.petPolicy}
+                    onChange={handleInputChange}
+                    className="w-full p-4 border-2 border-gray-300 rounded-xl text-xl focus:border-blue-500 focus:outline-none transition-colors"
+                  >
+                    <option value="No pets allowed">No pets allowed</option>
+                    <option value="Cats allowed">Cats allowed</option>
+                    <option value="Small pets allowed">Small pets allowed</option>
+                    <option value="Pets allowed with deposit">Pets allowed with deposit</option>
+                    <option value="All pets welcome">All pets welcome</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xl font-medium text-gray-700 mb-2">
+                  {t('utilities_included') || 'Utilities Included'}
+                </label>
+                <input
+                  type="text"
+                  name="utilities"
+                  value={formData.utilities}
+                  onChange={handleInputChange}
+                  className="w-full p-4 border-2 border-gray-300 rounded-xl text-xl focus:border-blue-500 focus:outline-none transition-colors"
+                  placeholder={t('utilities_placeholder') || 'e.g., Water and trash included, All utilities included, None included'}
+                />
+              </div>
+            </div>
+
+            {/* Messages */}
+            {error && (
+              <div className="p-4 bg-red-100 border-2 border-red-300 rounded-xl">
+                <p className="text-red-700 text-xl font-medium">{error}</p>
+              </div>
+            )}
+
+            {success && (
+              <div className="p-4 bg-green-100 border-2 border-green-300 rounded-xl">
+                <p className="text-green-700 text-xl font-medium">{success}</p>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <div className="pt-6">
+              <Button
+                type="submit"
+                name={loading ? (t('creating_property') || 'Creating Property...') : (t('create_property') || 'Create Property')}
+                disabled={loading}
+                className="w-full h-16 text-2xl font-semibold"
               />
             </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Property Type
-              </label>
-              <select
-                value={propertyForm.propertyType}
-                onChange={(e) => setPropertyForm({...propertyForm, propertyType: parseInt(e.target.value)})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value={PROPERTY_TYPES.HOUSE}>House</option>
-                <option value={PROPERTY_TYPES.OFFICE}>Office</option>
-              </select>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Monthly Rent (USDT)
-              </label>
-              <input
-                type="number"
-                value={propertyForm.rentAmount}
-                onChange={(e) => setPropertyForm({...propertyForm, rentAmount: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter rent amount"
-                min="1"
-                step="0.01"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                IPFS Hash
-              </label>
-              <input
-                type="text"
-                value={propertyForm.ipfsHash}
-                onChange={(e) => setPropertyForm({...propertyForm, ipfsHash: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter IPFS hash"
-              />
-            </div>
-            
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Adding Property...' : 'Add Property'}
-            </button>
           </form>
         </div>
-      )}
-
-      {/* Create Payment Form */}
-      <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h3 className="text-lg font-semibold mb-4">Create Payment</h3>
-        <form onSubmit={handleCreatePayment} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Landlord Address
-            </label>
-            <input
-              type="text"
-              value={paymentForm.landlord}
-              onChange={(e) => setPaymentForm({...paymentForm, landlord: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter landlord address"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Property ID
-            </label>
-            <input
-              type="number"
-              value={paymentForm.propertyId}
-              onChange={(e) => setPaymentForm({...paymentForm, propertyId: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter property ID"
-              min="1"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Amount (USDT)
-            </label>
-            <input
-              type="number"
-              value={paymentForm.amount}
-              onChange={(e) => setPaymentForm({...paymentForm, amount: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter payment amount"
-              min="1"
-              step="0.01"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Due Date
-            </label>
-            <input
-              type="date"
-              value={paymentForm.dueDate}
-              onChange={(e) => setPaymentForm({...paymentForm, dueDate: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? 'Creating Payment...' : 'Create Payment'}
-          </button>
-        </form>
       </div>
-
-      {/* User's Properties */}
-      {userRole === 'landlord' && properties.length > 0 && (
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h3 className="text-lg font-semibold mb-4">Your Properties</h3>
-          <div className="space-y-4">
-            {properties.map((property) => (
-              <div key={property.id} className="border border-gray-200 p-4 rounded-lg">
-                <h4 className="font-semibold">{property.title}</h4>
-                <p className="text-sm text-gray-600">
-                  Type: {getPropertyTypeName(property.propertyType)}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Rent: {property.rentAmount} USDT/month
-                </p>
-                <p className="text-sm text-gray-600">
-                  Status: {property.isAvailable ? 'Available' : 'Not Available'}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Created: {property.createdAt.toLocaleDateString()}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* User's Payments */}
-      {payments.length > 0 && (
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold mb-4">Your Payments</h3>
-          <div className="space-y-4">
-            {payments.map((payment) => (
-              <div key={payment.id} className="border border-gray-200 p-4 rounded-lg">
-                <h4 className="font-semibold">Payment #{payment.id}</h4>
-                <p className="text-sm text-gray-600">
-                  Property ID: {payment.propertyId}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Amount: {payment.amount} USDT
-                </p>
-                <p className="text-sm text-gray-600">
-                  Status: {getPaymentStatusName(payment.status)}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Due Date: {payment.dueDate.toLocaleDateString()}
-                </p>
-                {payment.paidDate && (
-                  <p className="text-sm text-gray-600">
-                    Paid Date: {payment.paidDate.toLocaleDateString()}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* No Data Messages */}
-      {userRole === 'landlord' && properties.length === 0 && (
-        <div className="bg-gray-50 p-6 rounded-lg text-center">
-          <p className="text-gray-600">No properties found. Add your first property above.</p>
-        </div>
-      )}
-
-      {payments.length === 0 && (
-        <div className="bg-gray-50 p-6 rounded-lg text-center">
-          <p className="text-gray-600">No payments found. Create your first payment above.</p>
-        </div>
-      )}
     </div>
   );
 };
 
-export default ContractExample; 
+export default PropertyForm; 

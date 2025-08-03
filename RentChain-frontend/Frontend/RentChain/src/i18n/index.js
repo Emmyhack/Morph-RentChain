@@ -7,6 +7,11 @@ import es from "./es.json";
 import fr from "./fr.json";
 import zh from "./zh.json";
 import ar from "./ar.json";
+import de from "./de.json";
+import it from "./it.json";
+import pt from "./pt.json";
+import ja from "./ja.json";
+import ko from "./ko.json";
 
 i18n
 	.use(LanguageDetector)
@@ -18,6 +23,11 @@ i18n
 			fr: { translation: fr },
 			zh: { translation: zh },
 			ar: { translation: ar },
+			de: { translation: de },
+			it: { translation: it },
+			pt: { translation: pt },
+			ja: { translation: ja },
+			ko: { translation: ko },
 		},
 		fallbackLng: "en",
 		interpolation: { escapeValue: false },

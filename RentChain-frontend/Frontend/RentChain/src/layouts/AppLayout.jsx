@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
+import PageNavigation from "../components/common/PageNavigation";
 import { useState } from "react";
 
 export default function AppLayout() {
@@ -10,6 +11,7 @@ export default function AppLayout() {
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
       <Outlet />
       <Footer />
+      <PageNavigation />
     </div>
   );
 }

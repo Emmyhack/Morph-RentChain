@@ -22,30 +22,27 @@ export const Web3Provider = ({ children }) => {
   const [signer, setSigner] = useState(null);
   const [network, setNetwork] = useState(null);
   const [contractsInitialized, setContractsInitialized] = useState(false);
+  const [registeredWallets, setRegisteredWallets] = useState({}); // Track wallet registrations
 
   // Check if MetaMask is installed
   const isMetaMaskInstalled = () => {
     return typeof window !== 'undefined' && window.ethereum && window.ethereum.isMetaMask;
   };
 
-  // Determine user role based on wallet address
-  // This is a simple implementation - in a real app, you'd check against your smart contract
-  const determineUserRole = (address) => {
-    if (!address) return null;
-    
-    // For demo purposes, we'll use a simple rule:
-    // Addresses starting with '0x1' are landlords, '0x2' are tenants
-    // In production, you'd check against your smart contract
-    const firstChar = address.charAt(2); // Skip '0x'
-    
-    if (firstChar === '1' || firstChar === '3' || firstChar === '5' || firstChar === '7' || firstChar === '9') {
-      return 'landlord';
-    } else if (firstChar === '2' || firstChar === '4' || firstChar === '6' || firstChar === '8' || firstChar === 'a' || firstChar === 'c' || firstChar === 'e') {
-      return 'tenant';
-    } else {
-      // Default to tenant for addresses starting with '0', 'b', 'd', 'f'
-      return 'tenant';
-    }
+  // Register wallet to a specific role
+  const registerWallet = (walletAddress, role) => {
+    const savedRegistrations = JSON.parse(localStorage.getItem('registeredWallets') || '{}');
+    savedRegistrations[walletAddress.toLowerCase()] = role;
+    localStorage.setItem('registeredWallets', JSON.stringify(savedRegistrations));
+    setRegisteredWallets(savedRegistrations);
+    setUserRole(role);
+  };
+
+  // Get wallet registration
+  const getWalletRole = (walletAddress) => {
+    if (!walletAddress) return null;
+    const savedRegistrations = JSON.parse(localStorage.getItem('registeredWallets') || '{}');
+    return savedRegistrations[walletAddress.toLowerCase()] || null;
   };
 
   // Connect to MetaMask
@@ -73,13 +70,17 @@ export const Web3Provider = ({ children }) => {
 
       if (accounts.length > 0) {
         const address = accounts[0];
-        const role = determineUserRole(address);
+        const savedRole = getWalletRole(address);
         
         setAccount(address);
         setIsConnected(true);
-        setUserRole(role);
+        setUserRole(savedRole);
         setProvider(web3Provider);
         setSigner(web3Signer);
+        
+        // Load saved registrations
+        const savedRegistrations = JSON.parse(localStorage.getItem('registeredWallets') || '{}');
+        setRegisteredWallets(savedRegistrations);
         
         // Initialize contract service
         try {
@@ -91,7 +92,7 @@ export const Web3Provider = ({ children }) => {
           // Continue without contract service for now
         }
         
-        return { address, role };
+        return { address, role: savedRole };
       }
     } catch (error) {
       console.error('Error connecting to MetaMask:', error);
@@ -119,9 +120,9 @@ export const Web3Provider = ({ children }) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  // Check if user can access a specific role
+  // Check if user can access a specific role (now always true for connected wallets)
   const canAccessRole = (requiredRole) => {
-    return userRole === requiredRole;
+    return isConnected; // Any connected wallet can access any role
   };
 
   // Listen for account changes
@@ -136,10 +137,14 @@ export const Web3Provider = ({ children }) => {
         } else {
           // User switched accounts
           const address = accounts[0];
-          const role = determineUserRole(address);
+          const savedRole = getWalletRole(address);
           setAccount(address);
           setIsConnected(true);
-          setUserRole(role);
+          setUserRole(savedRole);
+          
+          // Load saved registrations
+          const savedRegistrations = JSON.parse(localStorage.getItem('registeredWallets') || '{}');
+          setRegisteredWallets(savedRegistrations);
         }
       };
 
@@ -156,10 +161,14 @@ export const Web3Provider = ({ children }) => {
         .then((accounts) => {
           if (accounts.length > 0) {
             const address = accounts[0];
-            const role = determineUserRole(address);
+            const savedRole = getWalletRole(address);
             setAccount(address);
             setIsConnected(true);
-            setUserRole(role);
+            setUserRole(savedRole);
+            
+            // Load saved registrations
+            const savedRegistrations = JSON.parse(localStorage.getItem('registeredWallets') || '{}');
+            setRegisteredWallets(savedRegistrations);
           }
         })
         .catch(console.error);
@@ -180,8 +189,11 @@ export const Web3Provider = ({ children }) => {
     signer,
     network,
     contractsInitialized,
+    registeredWallets,
     connectWallet,
     disconnectWallet,
+    registerWallet,
+    getWalletRole,
     formatAddress,
     isMetaMaskInstalled,
     canAccessRole,

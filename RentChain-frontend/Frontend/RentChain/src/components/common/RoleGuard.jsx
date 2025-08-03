@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { useWeb3 } from '../../context/Web3Context';
 import { useNavigate } from 'react-router-dom';
-import { Button } from './Button';
 
 export default function RoleGuard({ requiredRole, children }) {
-  const { isConnected, userRole, canAccessRole } = useWeb3();
+  const { isConnected, userRole, registerWallet, account } = useWeb3();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,9 +13,11 @@ export default function RoleGuard({ requiredRole, children }) {
       return;
     }
 
-    // If user doesn't have the required role, stay on current page to show access denied
-    // The navigation will be handled by the access denied UI
-  }, [isConnected, navigate]);
+    // If user is connected but doesn't have a role assigned, register them to the required role
+    if (isConnected && account && !userRole) {
+      registerWallet(account, requiredRole);
+    }
+  }, [isConnected, userRole, requiredRole, navigate, account, registerWallet]);
 
   // If not connected, show loading while redirecting
   if (!isConnected) {
@@ -33,42 +34,6 @@ export default function RoleGuard({ requiredRole, children }) {
     );
   }
 
-  // If user doesn't have the required role, show access denied
-  if (!canAccessRole(requiredRole)) {
-    const currentRole = userRole || 'unknown';
-    const requiredRoleDisplay = requiredRole === 'landlord' ? 'Landlord' : 'Tenant';
-    const currentRoleDisplay = currentRole === 'landlord' ? 'Landlord' : 'Tenant';
-
-    return (
-      <div className="flex items-center justify-center w-full h-screen max-h-screen bg-gray-50">
-        <div className="flex flex-col items-center w-full max-w-4xl px-10 py-10 bg-white shadow-sm rounded-xl">
-          <div className="text-center mb-8">
-            <h2 className="text-4xl font-semibold text-red-600 mb-4">Access Denied</h2>
-            <p className="text-2xl font-medium text-gray-700 mb-2">
-              You are registered as a <span className="font-bold text-primary">{currentRoleDisplay}</span>
-            </p>
-            <p className="text-xl text-gray-600 mb-6">
-              This {requiredRoleDisplay} dashboard is not accessible with your current wallet address.
-            </p>
-          </div>
-          
-          <div className="flex flex-col gap-4 w-full max-w-md">
-            <Button 
-              onClick={() => navigate('/dashboard')} 
-              name={`Go to ${currentRoleDisplay} Dashboard`}
-              className="w-full"
-            />
-            <Button 
-              onClick={() => navigate('/')} 
-              name="Connect Different Wallet"
-              className="w-full bg-gray-500 hover:bg-gray-600"
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // If user has the required role, render the children
+  // If user is connected, allow access and register their wallet if needed
   return children;
 } 
