@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "buildCommand": "cd RentChain-frontend/Frontend/RentChain && npm install && npm run build",
-  "outputDirectory": "RentChain-frontend/Frontend/RentChain/dist",
-  "installCommand": "echo 'Installation handled in build command'",
-  "devCommand": "cd RentChain-frontend/Frontend/RentChain && npm run dev",
+  "rootDirectory": "RentChain-frontend/Frontend/RentChain",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
+  "devCommand": "npm run dev",
   "framework": "vite",
   "rewrites": [
     {

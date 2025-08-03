@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { ethers, parseUnits, formatUnits, formatEther } from 'ethers';
 import RentChainABI from '../abis/RentChain.json';
 import ListingsABI from '../abis/Listings.json';
 import EscrowABI from '../abis/Escrow.json';
@@ -122,7 +122,7 @@ class ContractService {
       const tx = await this.contracts.listings.addProperty(
         title,
         propertyType, // 0 for House, 1 for Office
-        ethers.utils.parseUnits(rentAmount.toString(), 6), // USDT has 6 decimals
+        parseUnits(rentAmount.toString(), 6), // USDT has 6 decimals
         ipfsHash,
         leaseAgreementIpfsHash
       );
@@ -141,7 +141,7 @@ class ContractService {
         propertyId,
         title,
         propertyType,
-        ethers.utils.parseUnits(rentAmount.toString(), 6),
+        parseUnits(rentAmount.toString(), 6),
         ipfsHash,
         leaseAgreementIpfsHash
       );
@@ -162,7 +162,7 @@ class ContractService {
         landlord: property[1],
         title: property[2],
         propertyType: property[3],
-        rentAmount: ethers.utils.formatUnits(property[4], 6),
+        rentAmount: formatUnits(property[4], 6),
         isAvailable: property[5],
         ipfsHash: property[6],
         leaseAgreementIpfsHash: property[7],
@@ -240,7 +240,7 @@ class ContractService {
       const tx = await this.contracts.escrow.createPayment(
         landlord,
         propertyId,
-        ethers.utils.parseUnits(amount.toString(), 6),
+        parseUnits(amount.toString(), 6),
         Math.floor(dueDate.getTime() / 1000)
       );
       const receipt = await tx.wait();
@@ -284,7 +284,7 @@ class ContractService {
         tenant: payment[1],
         landlord: payment[2],
         propertyId: payment[3].toString(),
-        amount: ethers.utils.formatUnits(payment[4], 6),
+        amount: formatUnits(payment[4], 6),
         dueDate: new Date(payment[5] * 1000),
         paidDate: payment[6] > 0 ? new Date(payment[6] * 1000) : null,
         status: payment[7],
@@ -333,8 +333,8 @@ class ContractService {
   async calculateFee(amount) {
     this.checkInitialized();
     try {
-      const fee = await this.contracts.escrow.calculateFee(ethers.utils.parseUnits(amount.toString(), 6));
-      return ethers.utils.formatUnits(fee, 6);
+      const fee = await this.contracts.escrow.calculateFee(parseUnits(amount.toString(), 6));
+      return formatUnits(fee, 6);
     } catch (error) {
       console.error('Error calculating fee:', error);
       throw error;
@@ -586,7 +586,7 @@ class ContractService {
     this.checkInitialized();
     try {
       const balance = await this.provider.getBalance(address);
-      return ethers.utils.formatEther(balance);
+      return formatEther(balance);
     } catch (error) {
       console.error('Error getting balance:', error);
       throw error;
