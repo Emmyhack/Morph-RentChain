@@ -246,16 +246,13 @@ contract Language is Ownable, Pausable, ReentrancyGuard {
 
     /**
      * @dev Returns users with a specific language preference
-     * @param languageCode Language code
-     * @param offset Starting index
      * @param limit Maximum number of users to return
      * @return Array of user addresses
      */
-    function getUsersByLanguage(string memory languageCode, uint256 offset, uint256 limit) external view returns (address[] memory) {
+    function getUsersByLanguage(string memory /* languageCode */, uint256 /* offset */, uint256 limit) external pure returns (address[] memory) {
         // Note: This is a simplified implementation
         // In a real scenario, you might want to maintain a separate mapping for efficient queries
         address[] memory users = new address[](limit);
-        uint256 count = 0;
         
         // This would need to iterate through all users, which is not gas efficient
         // For demonstration purposes, we'll return an empty array

@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { IoArrowBackOutline, IoArrowForwardOutline } from 'react-icons/io5';
 import { useTranslation } from 'react-i18next';
-import { useWeb3 } from '../../context/Web3Context';
+import { useWeb3 } from '../../hooks/useWeb3';
 
 const PageNavigation = () => {
   const navigate = useNavigate();

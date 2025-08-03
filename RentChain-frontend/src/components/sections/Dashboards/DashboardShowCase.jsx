@@ -3,7 +3,7 @@ import { IoCalendarOutline, IoStarOutline, IoWarningOutline } from "react-icons/
 import { useLocation } from "react-router-dom";
 import { GoPeople } from "react-icons/go";
 import { useContracts } from '../../../hooks/useContracts';
-import { useWeb3 } from '../../../context/Web3Context';
+import { useWeb3 } from '../../../hooks/useWeb3';
 import { useState, useEffect } from 'react';
 import { Tooltip } from 'react-tooltip';
 

@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useWeb3 } from '../context/Web3Context';
+import { useWeb3 } from './useWeb3';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../config/contracts';
 
 export const useContracts = () => {

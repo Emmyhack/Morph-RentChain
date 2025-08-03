@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useWeb3 } from '../../context/Web3Context';
+import { useWeb3 } from '../../hooks/useWeb3';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { 

@@ -4,7 +4,7 @@ import { GrVmMaintenance } from "react-icons/gr";
 import { Link, useNavigate } from "react-router-dom";
 import { MdOutlinePayments } from "react-icons/md";
 import { FaRegBuilding } from "react-icons/fa";
-import { useWeb3 } from "../../context/Web3Context";
+import { useWeb3 } from "../../hooks/useWeb3";
 import { useTranslation } from "react-i18next";
 
 export default function DashboardType() {
