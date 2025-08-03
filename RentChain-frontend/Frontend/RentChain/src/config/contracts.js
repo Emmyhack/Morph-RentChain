@@ -3,21 +3,21 @@
 
 export const CONTRACT_ADDRESSES = {
   // Main RentChain contract (coordinates all other contracts)
-  RENTCHAIN: '0x...', // Replace with actual deployed address
+  RENTCHAIN: import.meta.env.VITE_CONTRACT_ADDRESS || '0x0000000000000000000000000000000000000000',
   
   // Individual contract addresses
-  LISTINGS: '0x...',    // Property listings contract
-  ESCROW: '0x...',      // Payment and escrow contract
-  CHAT: '0x...',        // Messaging contract
-  COMPLAINTS: '0x...',  // Dispute resolution contract
-  REPORTS: '0x...',     // Reporting contract
-  CREDIT_SCORE: '0x...', // Credit scoring contract
-  REMINDERS: '0x...',   // Payment reminders contract
-  ON_RAMP: '0x...',     // Fiat on-ramp contract
-  LANGUAGE: '0x...',    // Multi-language support contract
+  LISTINGS: import.meta.env.VITE_LISTINGS_CONTRACT || '0x0000000000000000000000000000000000000000',
+  ESCROW: import.meta.env.VITE_ESCROW_CONTRACT || '0x0000000000000000000000000000000000000000',
+  CHAT: import.meta.env.VITE_CHAT_CONTRACT || '0x0000000000000000000000000000000000000000',
+  COMPLAINTS: import.meta.env.VITE_COMPLAINTS_CONTRACT || '0x0000000000000000000000000000000000000000',
+  REPORTS: import.meta.env.VITE_REPORTS_CONTRACT || '0x0000000000000000000000000000000000000000',
+  CREDIT_SCORE: import.meta.env.VITE_CREDIT_SCORE_CONTRACT || '0x0000000000000000000000000000000000000000',
+  REMINDERS: import.meta.env.VITE_REMINDERS_CONTRACT || '0x0000000000000000000000000000000000000000',
+  ON_RAMP: import.meta.env.VITE_ON_RAMP_CONTRACT || '0x0000000000000000000000000000000000000000',
+  LANGUAGE: import.meta.env.VITE_LANGUAGE_CONTRACT || '0x0000000000000000000000000000000000000000',
   
   // Token addresses
-  USDT: '0x...',        // USDT token address on your network
+  USDT: import.meta.env.VITE_USDT_ADDRESS || '0x176211869cA2b568f2A7D4EE941E073a821EE1ff',
 };
 
 // Network configuration
@@ -37,15 +37,15 @@ export const NETWORKS = {
   
   // Morph testnet
   MORPH_TESTNET: {
-    chainId: '0x2',
-    chainName: 'Morph Testnet',
+    chainId: import.meta.env.VITE_NETWORK_CHAIN_ID || '0x2',
+    chainName: import.meta.env.VITE_NETWORK_NAME || 'Morph Testnet',
     nativeCurrency: {
       name: 'ETH',
       symbol: 'ETH',
       decimals: 18,
     },
-    rpcUrls: ['https://rpc-testnet.morphl2.io'],
-    blockExplorerUrls: ['https://explorer-testnet.morphl2.io'],
+    rpcUrls: [import.meta.env.VITE_RPC_URL || 'https://rpc-testnet.morphl2.io'],
+    blockExplorerUrls: [import.meta.env.VITE_EXPLORER_URL || 'https://explorer-testnet.morphl2.io'],
   },
   
   // Local development

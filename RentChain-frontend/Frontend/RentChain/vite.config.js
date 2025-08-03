@@ -17,6 +17,7 @@ export default defineConfig({
     'process.env': {},
     'global': 'window',
   },
+  envPrefix: 'VITE_',
   build: {
     target: 'esnext',
     minify: 'esbuild',
