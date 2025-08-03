@@ -1,14 +1,8 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "RentChain-frontend/Frontend/RentChain/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
-  ],
+  "buildCommand": "cd RentChain-frontend/Frontend/RentChain && npm run build",
+  "outputDirectory": "RentChain-frontend/Frontend/RentChain/dist",
+  "installCommand": "cd RentChain-frontend/Frontend/RentChain && npm install",
+  "framework": "vite",
   "rewrites": [
     {
       "source": "/(.*)",
