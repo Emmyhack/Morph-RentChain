@@ -16,7 +16,7 @@
     "build:clean": "npm run clean && npm run build"
   },
   "dependencies": {
-    "@stripe/react-stripe-js": "^2.10.0",
+    "@stripe/react-stripe-js": "^3.9.0",
     "@stripe/stripe-js": "^5.3.0",
     "buffer": "^6.0.3",
     "ethers": "^6.15.0",

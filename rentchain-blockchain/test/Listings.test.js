@@ -8,6 +8,7 @@ describe("Listings", function () {
     const propertyId = 1;
     const rentAmount = ethers.parseUnits("1000", 6);
     const ipfsHash = "QmTestHash";
+    const leaseAgreementIpfsHash = "QmLeaseAgreementHash";
     const title = "Test Property";
     const propertyType = 0; // House
 
@@ -30,7 +31,7 @@ describe("Listings", function () {
     describe("Property creation", function () {
         it("Should allow user to create a property", async function () {
             await expect(
-                listings.connect(user1).addProperty(title, propertyType, rentAmount, ipfsHash)
+                listings.connect(user1).addProperty(title, propertyType, rentAmount, ipfsHash, leaseAgreementIpfsHash)
             ).to.emit(listings, "PropertyListed");
             const ids = await listings.getLandlordProperties(user1.address);
             expect(ids.length).to.equal(1);
@@ -42,12 +43,12 @@ describe("Listings", function () {
         });
         it("Should revert if rent amount is zero", async function () {
             await expect(
-                listings.connect(user1).addProperty(title, propertyType, 0, ipfsHash)
+                listings.connect(user1).addProperty(title, propertyType, 0, ipfsHash, leaseAgreementIpfsHash)
             ).to.be.revertedWith("Rent amount must be greater than 0");
         });
         it("Should revert if IPFS hash is empty", async function () {
             await expect(
-                listings.connect(user1).addProperty(title, propertyType, rentAmount, "")
+                listings.connect(user1).addProperty(title, propertyType, rentAmount, "", leaseAgreementIpfsHash)
             ).to.be.revertedWith("IPFS hash cannot be empty");
         });
     });
@@ -55,12 +56,12 @@ describe("Listings", function () {
     describe("Property update", function () {
         let id;
         beforeEach(async function () {
-            await listings.connect(user1).addProperty(title, propertyType, rentAmount, ipfsHash);
+            await listings.connect(user1).addProperty(title, propertyType, rentAmount, ipfsHash, leaseAgreementIpfsHash);
             [id] = await listings.getLandlordProperties(user1.address);
         });
         it("Should allow owner to update property", async function () {
             await expect(
-                listings.connect(user1).updateProperty(id, "New Title", 1, rentAmount * 2n, "QmNewHash")
+                listings.connect(user1).updateProperty(id, "New Title", 1, rentAmount * 2n, "QmNewHash", leaseAgreementIpfsHash)
             ).to.emit(listings, "PropertyUpdated");
             const property = await listings.getProperty(id);
             expect(property.title).to.equal("New Title");
@@ -69,17 +70,17 @@ describe("Listings", function () {
         });
         it("Should revert if not property owner", async function () {
             await expect(
-                listings.connect(user2).updateProperty(id, "New Title", 1, rentAmount, ipfsHash)
+                listings.connect(user2).updateProperty(id, "New Title", 1, rentAmount, ipfsHash, leaseAgreementIpfsHash)
             ).to.be.revertedWith("Only landlord can edit property");
         });
         it("Should revert if rent amount is zero", async function () {
             await expect(
-                listings.connect(user1).updateProperty(id, "New Title", 1, 0, ipfsHash)
+                listings.connect(user1).updateProperty(id, "New Title", 1, 0, ipfsHash, leaseAgreementIpfsHash)
             ).to.be.revertedWith("Rent amount must be greater than 0");
         });
         it("Should revert if IPFS hash is empty", async function () {
             await expect(
-                listings.connect(user1).updateProperty(id, "New Title", 1, rentAmount, "")
+                listings.connect(user1).updateProperty(id, "New Title", 1, rentAmount, "", leaseAgreementIpfsHash)
             ).to.be.revertedWith("IPFS hash cannot be empty");
         });
     });
@@ -87,7 +88,7 @@ describe("Listings", function () {
     describe("Property removal", function () {
         let id;
         beforeEach(async function () {
-            await listings.connect(user1).addProperty(title, propertyType, rentAmount, ipfsHash);
+            await listings.connect(user1).addProperty(title, propertyType, rentAmount, ipfsHash, leaseAgreementIpfsHash);
             [id] = await listings.getLandlordProperties(user1.address);
         });
         it("Should allow owner to remove property", async function () {
@@ -106,14 +107,14 @@ describe("Listings", function () {
 
     describe("Getters and views", function () {
         it("Should return all properties for a user", async function () {
-            await listings.connect(user1).addProperty(title, propertyType, rentAmount, ipfsHash);
-            await listings.connect(user1).addProperty("Another", 1, rentAmount, ipfsHash);
+            await listings.connect(user1).addProperty(title, propertyType, rentAmount, ipfsHash, leaseAgreementIpfsHash);
+            await listings.connect(user1).addProperty("Another", 1, rentAmount, ipfsHash, leaseAgreementIpfsHash);
             const ids = await listings.getLandlordProperties(user1.address);
             expect(ids.length).to.equal(2);
         });
         it("Should return all properties", async function () {
-            await listings.connect(user1).addProperty(title, propertyType, rentAmount, ipfsHash);
-            await listings.connect(user2).addProperty("Another", 1, rentAmount, ipfsHash);
+            await listings.connect(user1).addProperty(title, propertyType, rentAmount, ipfsHash, leaseAgreementIpfsHash);
+            await listings.connect(user2).addProperty("Another", 1, rentAmount, ipfsHash, leaseAgreementIpfsHash);
             const all = await listings.getAllProperties();
             expect(all.length).to.equal(2);
         });
@@ -127,7 +128,7 @@ describe("Listings", function () {
         it("Should block actions when paused", async function () {
             await listings.connect(owner).pause();
             await expect(
-                listings.connect(user1).addProperty(title, propertyType, rentAmount, ipfsHash)
+                listings.connect(user1).addProperty(title, propertyType, rentAmount, ipfsHash, leaseAgreementIpfsHash)
             ).to.be.revertedWithCustomError(listings, "EnforcedPause");
         });
     });

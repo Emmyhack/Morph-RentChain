@@ -275,30 +275,27 @@ contract CreditScore is Ownable, Pausable, ReentrancyGuard {
 
     /**
      * @dev Returns payment timeliness percentage for a tenant
-     * @param tenant Address of the tenant
      * @return percentage Percentage of on-time payments (0-100)
      */
-    function getPaymentTimelinessPercentage(address tenant) external pure returns (uint256 percentage) {
+    function getPaymentTimelinessPercentage(address /* tenant */) external pure returns (uint256 percentage) {
         // For now, return a default value
         return 85; // 85% on-time payments
     }
 
-    /**yes
+    /**
      * @dev Returns complaint resolution rate for a tenant
-     * @param tenant Address of the tenant
      * @return percentage Resolution rate percentage (0-100)
      */
-    function getComplaintResolutionRate(address tenant) external pure returns (uint256 percentage) {
+    function getComplaintResolutionRate(address /* tenant */) external pure returns (uint256 percentage) {
         // For now, return a default value
         return 90; // 90% resolution rate
     }
 
     /**
      * @dev Returns average rating for a tenant
-     * @param tenant Address of the tenant
      * @return average Average rating (0-5)
      */
-    function getAverageRating(address tenant) external pure returns (uint256 average) {
+    function getAverageRating(address /* tenant */) external pure returns (uint256 average) {
         // For now, return a default value
         return 4; // Average rating of 4/5
     }
