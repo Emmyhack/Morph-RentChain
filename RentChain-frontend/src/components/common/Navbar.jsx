@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import LanguageSelector from "./LanguageSelector";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useWeb3 } from "../../context/Web3Context";
+import { useWeb3 } from "../../hooks/useWeb3";
 
 export default function Navbar({ darkMode, setDarkMode }) {
   const { t } = useTranslation();

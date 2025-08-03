@@ -2,7 +2,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button, ButtonTwo } from "../common/Button";
 import { FaRegEdit } from "react-icons/fa";
-import { useWeb3 } from "../../context/Web3Context";
+import { useWeb3 } from "../../hooks/useWeb3";
 
 export default function PropertyCard({ property }) {
   const navigate = useNavigate();

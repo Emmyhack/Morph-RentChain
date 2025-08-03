@@ -6,7 +6,7 @@ import { CiCreditCard1, CiWallet } from "react-icons/ci";
 import { useContracts } from '../../hooks/useContracts';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { useWeb3 } from '../../context/Web3Context';
+import { useWeb3 } from '../../hooks/useWeb3';
 import { useTranslation } from 'react-i18next';
 
 const STRIPE_PUBLIC_KEY = 'pk_test_XXXXXXXXXXXXXXXXXXXXXXXX'; // TODO: Replace with your real Stripe public key

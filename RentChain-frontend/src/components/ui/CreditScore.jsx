@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { IoStarOutline, IoTrendingUpOutline, IoRefreshOutline, IoArrowBackSharp, IoTimeOutline, IoShieldCheckmarkOutline, IoWalletOutline } from "react-icons/io5";
 import { useContracts } from '../../hooks/useContracts';
-import { useWeb3 } from '../../context/Web3Context';
+import { useWeb3 } from '../../hooks/useWeb3';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 

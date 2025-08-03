@@ -1,17 +1,9 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import contractService from '../services/contractService';
 import { CONTRACT_ADDRESSES, DEFAULT_NETWORK, ERROR_MESSAGES, SUCCESS_MESSAGES } from '../config/contracts';
 
-const Web3Context = createContext();
-
-export const useWeb3 = () => {
-  const context = useContext(Web3Context);
-  if (!context) {
-    throw new Error('useWeb3 must be used within a Web3Provider');
-  }
-  return context;
-};
+export const Web3Context = createContext();
 
 export const Web3Provider = ({ children }) => {
   const [account, setAccount] = useState(null);
@@ -121,7 +113,7 @@ export const Web3Provider = ({ children }) => {
   };
 
   // Check if user can access a specific role (now always true for connected wallets)
-  const canAccessRole = (requiredRole) => {
+  const canAccessRole = (/* requiredRole */) => {
     return isConnected; // Any connected wallet can access any role
   };
 

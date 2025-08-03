@@ -2,7 +2,7 @@ import { LuClock } from "react-icons/lu";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { useContracts } from "../../hooks/useContracts";
-import { useWeb3 } from "../../context/Web3Context";
+import { useWeb3 } from "../../hooks/useWeb3";
 
 export default function RecentActivities() {
   const location = useLocation();

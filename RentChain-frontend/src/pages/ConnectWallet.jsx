@@ -1,7 +1,7 @@
 import { IoWalletOutline } from "react-icons/io5";
 import { Button } from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
-import { useWeb3 } from "../context/Web3Context";
+import { useWeb3 } from "../hooks/useWeb3";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 

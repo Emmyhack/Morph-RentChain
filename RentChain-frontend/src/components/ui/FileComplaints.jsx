@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useWeb3 } from "../../context/Web3Context";
+import { useWeb3 } from "../../hooks/useWeb3";
 import { useContracts } from "../../hooks/useContracts";
 import { useNavigate } from "react-router-dom";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
