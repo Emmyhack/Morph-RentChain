@@ -419,6 +419,28 @@ class ContractService {
     }
   }
 
+  async getConversationParticipants(userAddress) {
+    this.checkInitialized();
+    try {
+      const participants = await this.contracts.chat.getConversationParticipants(userAddress);
+      return participants;
+    } catch (error) {
+      console.error('Error getting conversation participants:', error);
+      throw error;
+    }
+  }
+
+  async getUnreadMessageCount(userAddress) {
+    this.checkInitialized();
+    try {
+      const count = await this.contracts.chat.getUnreadMessageCount(userAddress);
+      return count.toString();
+    } catch (error) {
+      console.error('Error getting unread message count:', error);
+      throw error;
+    }
+  }
+
   // ===== COMPLAINTS CONTRACT METHODS =====
 
   async fileComplaint(respondent, propertyId, ipfsHash) {

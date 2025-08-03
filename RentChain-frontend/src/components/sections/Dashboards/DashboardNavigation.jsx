@@ -1,6 +1,7 @@
 import { FaMoneyBill } from "react-icons/fa";
 import { IoChatbubbleOutline, IoHomeOutline, IoWarningOutline } from "react-icons/io5";
 import { Link, useLocation } from "react-router-dom";
+import ChatNotification from "../../ui/ChatNotification";
 
 export default function DashboardNavigation() {
   const location = useLocation();
@@ -30,8 +31,11 @@ export default function DashboardNavigation() {
               </div>
             </Link>
             <Link to="/dashboard/landlord-dashboard/chat">
-              <div className="flex items-center w-full p-8 bg-white border shadow-sm cursor-pointer border-gray-50 md:flex-1 hover:scale-95 gap-x-8 rounded-xl">
-                <IoChatbubbleOutline className="w-20 h-20 p-2 text-purple-500 bg-gray-50 rounded-xl" />
+              <div className="flex items-center w-full p-8 bg-white border shadow-sm cursor-pointer border-gray-50 md:flex-1 hover:scale-95 gap-x-8 rounded-xl relative">
+                <div className="relative">
+                  <IoChatbubbleOutline className="w-20 h-20 p-2 text-purple-500 bg-gray-50 rounded-xl" />
+                  <ChatNotification />
+                </div>
                 <h3 className="text-4xl font-semibold ">chats </h3>
               </div>
             </Link>
@@ -57,8 +61,11 @@ export default function DashboardNavigation() {
               </div>
             </Link>
             <Link to="/dashboard/tenant-dashboard/chat">
-              <div className="flex items-center w-full p-8 bg-white border shadow-sm cursor-pointer border-gray-50 md:flex-1 hover:scale-95 gap-x-8 rounded-xl">
-                <IoChatbubbleOutline className="w-20 h-20 p-2 text-purple-500 bg-gray-50 rounded-xl" />
+              <div className="flex items-center w-full p-8 bg-white border shadow-sm cursor-pointer border-gray-50 md:flex-1 hover:scale-95 gap-x-8 rounded-xl relative">
+                <div className="relative">
+                  <IoChatbubbleOutline className="w-20 h-20 p-2 text-purple-500 bg-gray-50 rounded-xl" />
+                  <ChatNotification />
+                </div>
                 <h3 className="text-4xl font-semibold ">chats </h3>
               </div>
             </Link>
